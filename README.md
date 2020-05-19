@@ -17,4 +17,4 @@ This project uses some modified GPLv2 code on a single file (`fuse_launcher_gpl2
 
 All other files are avaliable as MIT.
 
-Due to this reason, the resulting compiled binary will be GPLv2-licensed unless rewritten.
+Due to this reason, the resulting compiled binary will be GPLv2-licensed unless that single file rewritten.
