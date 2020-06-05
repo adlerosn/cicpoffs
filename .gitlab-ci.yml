@@ -1,0 +1,7 @@
+build:
+  stage: build
+  script:
+    - make
+  artifacts:
+    paths:
+      - cicpoffs
