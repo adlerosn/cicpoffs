@@ -11,6 +11,10 @@ The difference is that:
 
 Run Stardew Valley (linux) with some mods (that are cross-platform in theory, but relies on Windows' case-insensitive file system).
 
+## Preserve inode number
+
+Add `-o use_ino` argument to the commandline otherwise each case combination that points to the same file will get different inodes.
+
 ## License
 
 This project uses some modified GPLv2 code on a single file (`fuse_launcher_gpl2.cpp`).
