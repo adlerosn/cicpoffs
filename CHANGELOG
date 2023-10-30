@@ -1,3 +1,7 @@
+## [0.0.2a] - 2023-10-30
+Ported to work with FUSE3
+Added dual MIT/GPL licensing
+
 ## [0.0.1] - 2020-06-05
 Added CI
 

@@ -24,7 +24,7 @@
 #include "cicpoffs.hpp"
 #include "cicpps.hpp"
 extern "C"{
-#include <ulockmgr.h>
+#include "ulockmgr.h"
 #include <errno.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -55,7 +55,7 @@ static struct fuse_operations operations = {
 	.chmod = fuse_fn_chmod,
 	.chown = fuse_fn_chown,
 	.truncate = fuse_fn_truncate,
-	.utime = fuse_fn_utime,
+	//.utime = fuse_fn_utime,
 	.open = fuse_fn_open,
 	.read = fuse_fn_read,
 	.write = fuse_fn_write,
@@ -75,8 +75,8 @@ static struct fuse_operations operations = {
 	.destroy = fuse_fn_destroy,
 	.access = fuse_fn_access,
 	.create = fuse_fn_create,
-	.ftruncate = fuse_fn_ftruncate,
-	.fgetattr = fuse_fn_fgetattr,
+	//.ftruncate = fuse_fn_ftruncate,
+	//.fgetattr = fuse_fn_fgetattr,
 	.lock = fuse_fn_lock,
 	.utimens = fuse_fn_utimens,
 	//.bmap = <unimplemented> - not for block devices,
@@ -98,7 +98,7 @@ static void ignore_print(const char* msg){};
 
 static void (*logmsg) (const char* msg) = ignore_print;
 
-void* (fuse_fn_init)        (struct fuse_conn_info* conn){
+void* (fuse_fn_init)        (struct fuse_conn_info* conn, struct fuse_config* cfg){
 	struct stat st;
 	if(stat(read_source_directory, &st)){
 		logmsg("Source does not exist.");
@@ -116,7 +116,7 @@ void  (fuse_fn_destroy)     (void* private_data){
 	return;
 };
 
-int   (fuse_fn_getattr)     (const char* path, struct stat* stbuf){
+int   (fuse_fn_getattr)     (const char* path, struct stat* stbuf, struct fuse_file_info* fi){
 	const char* correctpath = correct_case_sensitivity_for(read_source_directory, path);
 	int retval = stat(correctpath, stbuf);
 	free((void*) correctpath);
@@ -166,7 +166,8 @@ int   (fuse_fn_symlink)     (const char* to, const char* from){
 	return retval;
 };
 
-int   (fuse_fn_rename)      (const char* from, const char* to){
+// flag behavior is absolutely ignored
+int   (fuse_fn_rename)      (const char* from, const char* to, unsigned int flags){
 	const char* correctfrom = correct_case_sensitivity_for(read_source_directory, from);
 	const char* correctto = correct_case_sensitivity_for(read_source_directory, to);
 	int retval = rename(correctfrom, correctto);
@@ -184,33 +185,33 @@ int   (fuse_fn_link)        (const char* from, const char* to){
 	return retval;
 };
 
-int   (fuse_fn_chmod)       (const char* path, mode_t mode){
+int   (fuse_fn_chmod)       (const char* path, mode_t mode, struct fuse_file_info* fi){
 	const char* correctpath = correct_case_sensitivity_for(read_source_directory, path);
 	int retval = chmod(correctpath, mode);
 	free((void*) correctpath);
 	return retval;
 };
 
-int   (fuse_fn_chown)       (const char* path, uid_t uid, gid_t gid){
+int   (fuse_fn_chown)       (const char* path, uid_t uid, gid_t gid, struct fuse_file_info*){
 	const char* correctpath = correct_case_sensitivity_for(read_source_directory, path);
 	int retval = chown(correctpath, uid, gid);
 	free((void*) correctpath);
 	return retval;
 };
 
-int   (fuse_fn_truncate)    (const char* path, off_t off){
+int   (fuse_fn_truncate)    (const char* path, off_t off, struct fuse_file_info*){
 	const char* correctpath = correct_case_sensitivity_for(read_source_directory, path);
 	int retval = truncate(correctpath, off);
 	free((void*) correctpath);
 	return retval;
 };
 
-int   (fuse_fn_utime)       (const char* path, struct utimbuf* buf){
-	const char* correctpath = correct_case_sensitivity_for(read_source_directory, path);
-	int retval = utime(correctpath, buf);
-	free((void*) correctpath);
-	return retval;
-};
+/** int   (fuse_fn_utime)       (const char* path, struct utimbuf* buf){
+*	const char* correctpath = correct_case_sensitivity_for(read_source_directory, path);
+*	int retval = utime(correctpath, buf);
+*	free((void*) correctpath);
+*	return retval;
+};*/
 
 int   (fuse_fn_open)        (const char* path, struct fuse_file_info* ffi){
 	const char* correctpath = correct_case_sensitivity_for(read_source_directory, path);
@@ -292,7 +293,7 @@ int   (fuse_fn_opendir)     (const char* path, struct fuse_file_info* ffi){
 	return dp==NULL ? -errno : 0;
 };
 
-int   (fuse_fn_readdir)     (const char* path, void* buf, fuse_fill_dir_t filler, off_t off, struct fuse_file_info* ffi){
+int   (fuse_fn_readdir)     (const char* path, void* buf, fuse_fill_dir_t filler, off_t off, struct fuse_file_info* ffi, enum fuse_readdir_flags flags){
 	DIR* dp = (DIR*) ffi->fh;
 	if(!dp) return -EBADF;
 	seekdir(dp, off);
@@ -301,7 +302,7 @@ int   (fuse_fn_readdir)     (const char* path, void* buf, fuse_fill_dir_t filler
 		struct stat st;
 		st.st_ino = de->d_ino;
 		st.st_mode = de->d_type << 12;
-		if (filler(buf, de->d_name, &st, telldir(dp))) break;
+		if (filler(buf, de->d_name, &st, telldir(dp), FUSE_FILL_DIR_PLUS)) break;
 	}
 	return 0;
 };
@@ -347,7 +348,7 @@ int   (fuse_fn_lock)        (const char* path, struct fuse_file_info* ffi, int c
 	return ulockmgr_op(ffi->fh, cmd, lock, &ffi->lock_owner, sizeof(ffi->lock_owner));
 };
 
-int   (fuse_fn_utimens)     (const char* path, const struct timespec ts[2]){
+int   (fuse_fn_utimens)     (const char* path, const struct timespec ts[2], struct fuse_file_info* fi){
 	struct timeval tv[2];
 	tv[0].tv_sec = ts[0].tv_sec;
 	tv[0].tv_usec = ts[0].tv_nsec / 1000;
