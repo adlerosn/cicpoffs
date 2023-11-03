@@ -1,9 +1,16 @@
+## [0.0.2b] - 2023-11-02
+
+Adler Neves relicensed their MIT code contributions as GPLv2, as requirement to accept Bruno Gazotti's contributions
+
 ## [0.0.2a] - 2023-10-30
+
 Ported to work with FUSE3
 Added dual MIT/GPL licensing
 
 ## [0.0.1] - 2020-06-05
+
 Added CI
 
 ## [0.0.1] - 2020-05-18
+
 Initial release

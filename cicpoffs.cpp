@@ -1,24 +1,10 @@
-/* MIT License
- *
+/*
  * Copyright (c) 2020 Adler Neves <adlerosn@gmail.com>
+ * Copyright (c) 2023 Bruno Gazotti <bgazotti@gmail.com>
  * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * CICPOFFS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation version 2 of the License.
  */
 
 #include "cicpoffs.hpp"
@@ -348,7 +334,7 @@ int   (fuse_fn_lock)        (const char* path, struct fuse_file_info* ffi, int c
 	return ulockmgr_op(ffi->fh, cmd, lock, &ffi->lock_owner, sizeof(ffi->lock_owner));
 };
 
-int   (fuse_fn_utimens)     (const char* path, const struct timespec ts[2], struct fuse_file_info* fi){
+int   (fuse_fn_utimens)     (const char* path, const struct timespec ts[2]){
 	struct timeval tv[2];
 	tv[0].tv_sec = ts[0].tv_sec;
 	tv[0].tv_usec = ts[0].tv_nsec / 1000;
