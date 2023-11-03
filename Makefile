@@ -1,8 +1,10 @@
-CXX := g++
-CXX_FLAGS :=
-
 cicpoffs:
-	${CXX} --std=c++17 cicpps.cpp fuse_launcher_gpl2.cpp -o cicpoffs -O2 -Wall $(shell pkg-config fuse --cflags --libs) -lulockmgr -fPIC ${CXX_FLAGS}
+	${CC} ulockmgr.c -c $(shell pkg-config fuse3 libattr --cflags --libs) -fPIC ${CFLAGS}
+	${CXX} --std=c++17 ulockmgr.o cicpps.cpp fuse_launcher_gpl2.cpp -o cicpoffs $(shell pkg-config fuse3 libattr --cflags --libs) -fPIC ${CXXFLAGS}
+
+install:
+	install -Dm755 cicpoffs ${DESTDIR}/usr/bin/cicpoffs
 
 clean:
-	rm -f cicpoffs
+	rm -f ulockmgr.o cicpoffs
+

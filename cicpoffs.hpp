@@ -23,26 +23,26 @@
 
 #pragma once
 
-#define FUSE_USE_VERSION 29
+#define FUSE_USE_VERSION 31
 
 #include <fuse.h>
 
 // https://www.cs.hmc.edu/~geoff/classes/hmc.cs135.201001/homework/fuse/fuse_doc.html
-void* (fuse_fn_init)        (struct fuse_conn_info*);
+void* (fuse_fn_init)        (struct fuse_conn_info*, struct fuse_config*);
 void  (fuse_fn_destroy)     (void*);
-int   (fuse_fn_getattr)     (const char*, struct stat*);
+int   (fuse_fn_getattr)     (const char*, struct stat*, struct fuse_file_info*);
 int   (fuse_fn_readlink)    (const char*, char*, size_t);
 int   (fuse_fn_mknod)       (const char*, mode_t, dev_t);
 int   (fuse_fn_mkdir)       (const char*, mode_t);
 int   (fuse_fn_unlink)      (const char*);
 int   (fuse_fn_rmdir)       (const char*);
 int   (fuse_fn_symlink)     (const char*, const char*);
-int   (fuse_fn_rename)      (const char*, const char*);
+int   (fuse_fn_rename)      (const char*, const char*, unsigned int);
 int   (fuse_fn_link)        (const char*, const char*);
-int   (fuse_fn_chmod)       (const char*, mode_t);
-int   (fuse_fn_chown)       (const char*, uid_t, gid_t);
-int   (fuse_fn_truncate)    (const char*, off_t);
-int   (fuse_fn_utime)       (const char*, struct utimbuf*);
+int   (fuse_fn_chmod)       (const char*, mode_t, struct fuse_file_info*);
+int   (fuse_fn_chown)       (const char*, uid_t, gid_t, struct fuse_file_info*);
+int   (fuse_fn_truncate)    (const char*, off_t, struct fuse_file_info*);
+//int   (fuse_fn_utime)       (const char*, struct utimbuf*);
 int   (fuse_fn_open)        (const char*, struct fuse_file_info*);
 int   (fuse_fn_read)        (const char*, char*, size_t, off_t, struct fuse_file_info*);
 int   (fuse_fn_write)       (const char*, const char*, size_t, off_t, struct fuse_file_info*);
@@ -55,15 +55,15 @@ int   (fuse_fn_getxattr)    (const char*, const char*, char*, size_t);
 int   (fuse_fn_listxattr)   (const char*, char*, size_t);
 int   (fuse_fn_removexattr) (const char*, const char*);
 int   (fuse_fn_opendir)     (const char*, struct fuse_file_info*);
-int   (fuse_fn_readdir)     (const char*, void*, fuse_fill_dir_t, off_t, struct fuse_file_info*);
+int   (fuse_fn_readdir)     (const char*, void*, fuse_fill_dir_t, off_t, struct fuse_file_info*, enum fuse_readdir_flags);
 int   (fuse_fn_releasedir)  (const char*, struct fuse_file_info*);
 int   (fuse_fn_fsyncdir)    (const char*, int, struct fuse_file_info*);
 int   (fuse_fn_access)      (const char*, int);
 int   (fuse_fn_create)      (const char*, mode_t, struct fuse_file_info*);
-int   (fuse_fn_ftruncate)   (const char*, off_t, struct fuse_file_info*);
-int   (fuse_fn_fgetattr)    (const char*, struct stat*, struct fuse_file_info*);
+//int   (fuse_fn_ftruncate)   (const char*, off_t, struct fuse_file_info*);
+//int   (fuse_fn_fgetattr)    (const char*, struct stat*, struct fuse_file_info*);
 int   (fuse_fn_lock)        (const char*, struct fuse_file_info*, int, struct flock*);
-int   (fuse_fn_utimens)     (const char*, const struct timespec[2]);
+int   (fuse_fn_utimens)     (const char*, const struct timespec[2], struct fuse_file_info*);
 int   (fuse_fn_bmap)        (const char*, size_t, uint64_t*);
 int   (fuse_fn_ioctl)       (const char*, int, void*, struct fuse_file_info*, unsigned int, void*);
 int   (fuse_fn_poll)        (const char*, struct fuse_file_info*, struct fuse_pollhandle*, unsigned*);
