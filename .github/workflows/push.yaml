@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: "sudo apt update"
-      - run: "sudo apt install -y gcc g++ autotools-dev fuse3 libfuse-dev libfuse3-dev libattr1-dev"
+      - run: "sudo apt install -y gcc g++ autotools-dev fuse3 libfuse-dev libfuse3-dev libattr1-dev alien"
       - run: "mkdir -p packaging/debian/usr/bin"
       - run: "make cicpoffs"
       - run: "cp cicpoffs packaging/debian/usr/bin/cicpoffs"
@@ -18,15 +18,21 @@ jobs:
       - run: "ln -s cicpoffs packaging/debian/usr/bin/mount.cicpoffs"
       - run: "dpkg-deb --build packaging/debian"
       - run: "cp packaging/debian.deb packaging/cicpoffs.deb"
+      - run: "sudo alien -r -c -v packaging/debian.deb"
+      - run: "cp packaging/debian.rpm packaging/cicpoffs.rpm"
       - uses: actions/upload-artifact@v3
         with:
           name: cicpoffs.deb
           path: packaging/debian.deb
+      - uses: actions/upload-artifact@v3
+        with:
+          name: cicpoffs.rpm
+          path: packaging/debian.rpm
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: packaging/cicpoffs.deb
+          file: packaging/cicpoffs.*
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true

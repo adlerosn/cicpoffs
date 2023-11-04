@@ -15,6 +15,10 @@ The difference is that:
 - Run Stardew Valley (linux) with some mods (that are cross-platform in theory, but relies on Windows' case-insensitive file system).
 - Run TESV:Skyrim (linux) with some mods (that are cross-platform in theory, but may have issues deriving from Windows' case-insensitive file system and there's no enforceable convention in modding).
 
+## Pre-built packages
+
+Check the [releases](https://github.com/adlerosn/cicpoffs/releases/latest) tab.
+
 ## Preserve inode number
 
 Add `-o use_ino` argument to the commandline otherwise each case combination that points to the same file will get different inodes.
