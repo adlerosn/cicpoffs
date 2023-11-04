@@ -1,0 +1,9 @@
+Package: cicpoffs
+Version: 0.2
+Section: custom
+Priority: optional
+Architecture: amd64
+Essential: no
+Installed-Size: 1024
+Maintainer: adlerosn@gmail.com
+Description: Case-Insensitive Case-Preserving Overlay FUSE File System

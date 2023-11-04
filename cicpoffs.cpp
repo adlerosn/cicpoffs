@@ -10,7 +10,7 @@
 #include "cicpoffs.hpp"
 #include "cicpps.hpp"
 extern "C"{
-#include "ulockmgr.h"
+#include <ulockmgr.h>
 #include <errno.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -25,7 +25,7 @@ extern "C"{
 #include <sys/time.h>
 }
 
-#define VERSION "0.0.1"
+#define VERSION "0.0.2"
 
 static struct fuse_operations operations = {
 	.getattr = fuse_fn_getattr,
@@ -334,7 +334,7 @@ int   (fuse_fn_lock)        (const char* path, struct fuse_file_info* ffi, int c
 	return ulockmgr_op(ffi->fh, cmd, lock, &ffi->lock_owner, sizeof(ffi->lock_owner));
 };
 
-int   (fuse_fn_utimens)     (const char* path, const struct timespec ts[2]){
+int   (fuse_fn_utimens)     (const char* path, const struct timespec ts[2], struct fuse_file_info* ffi){
 	struct timeval tv[2];
 	tv[0].tv_sec = ts[0].tv_sec;
 	tv[0].tv_usec = ts[0].tv_nsec / 1000;
