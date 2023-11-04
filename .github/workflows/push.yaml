@@ -17,16 +17,34 @@ jobs:
       - run: "chmod 0755 packaging/debian/usr/bin/cicpoffs"
       - run: "ln -s cicpoffs packaging/debian/usr/bin/mount.cicpoffs"
       - run: "dpkg-deb --build packaging/debian"
+      - run: "cp packaging/debian.deb packaging/cicpoffs.deb"
       - uses: actions/upload-artifact@v3
         with:
           name: cicpoffs.deb
           path: packaging/debian.deb
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: packaging/cicpoffs.deb
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
   Build_for_ARCH:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: "docker run --rm -v ./:/repo archlinux /bin/bash /repo/packaging/arch/bash.sh"
+      - run: "cp packaging/arch/cicpoffs.tar.zst packaging/cicpoffs.tar.zst"
       - uses: actions/upload-artifact@v3
         with:
           name: cicpoffs.tar.zst
           path: packaging/arch/cicpoffs.tar.zst
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: packaging/cicpoffs.tar.zst
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
