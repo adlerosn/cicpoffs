@@ -5,5 +5,5 @@ install:
 	install -Dm755 cicpoffs ${DESTDIR}/usr/bin/cicpoffs
 
 clean:
-	rm -f ulockmgr.o cicpoffs
+	rm -f cicpoffs
 

@@ -5,4 +5,4 @@ useradd user -u 1000
 chown user -R ../..
 sudo -u user makepkg --skipinteg --skipchecksums --skippgpcheck
 rm -rf pkg src
-mv $(ls -1 | grep cicpoffs-git- | head -1) cicpoffs.tar.zst
+mv $(ls -1 | grep cicpoffs-bin- | head -1) cicpoffs.tar.zst

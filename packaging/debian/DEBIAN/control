@@ -4,6 +4,7 @@ Section: custom
 Priority: optional
 Architecture: amd64
 Essential: no
+Depends: fuse3, libfuse-dev, libfuse3-dev, libattr1-dev
 Installed-Size: 1024
 Maintainer: adlerosn@gmail.com
 Description: Case-Insensitive Case-Preserving Overlay FUSE File System
