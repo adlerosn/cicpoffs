@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: "docker run --rm -v ./:/repo archlinux /bin/bash /repo/packaging/arch/bash.sh"
-      - run: "cp packaging/arch/cicpoffs.tar.zst packaging/cicpoffs.tar.zst"
+      - run: "sudo cp packaging/arch/cicpoffs.tar.zst packaging/cicpoffs.tar.zst"
       - uses: actions/upload-artifact@v3
         with:
           name: cicpoffs.tar.zst
