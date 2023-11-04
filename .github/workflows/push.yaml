@@ -1,5 +1,5 @@
-name: Update relese binaries
-run-name: Update relese binaries
+name: Build and push release
+run-name: Building binaries and updating release artifacts
 on:
   push:
     branches:
