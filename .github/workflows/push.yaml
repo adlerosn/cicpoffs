@@ -8,7 +8,6 @@ jobs:
   Build_for_DEB:
     runs-on: ubuntu-latest
     steps:
-      - run: "false"
       - uses: actions/checkout@v3
       - run: "apt update"
       - run: "apt install -y gcc g++ autotools-dev fuse3 libfuse-dev libfuse3-dev libattr1-dev"
@@ -26,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: "docker run --rm -it -v ./:/repo archlinux /bin/bash /repo/packaging/arch/bash.sh"
+      - run: "docker run --rm -v ./:/repo archlinux /bin/bash /repo/packaging/arch/bash.sh"
       - uses: actions/upload-artifact@v3
         with:
           name: cicpoffs.tar.zst
