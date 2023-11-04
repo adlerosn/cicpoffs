@@ -3,7 +3,7 @@
 _pkgname='cicpoffs'
 provides=(_pkgname)
 conflicts=(_pkgname)
-pkgver=0.0.2.r10.a8d32c6
+pkgver=0.0.2.r20.4b31730
 pkgname="$_pkgname-bin"
 pkgrel=1
 pkgdesc="Case-Insensitive Case-Preserving Overlay FUSE File System"

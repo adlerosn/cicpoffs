@@ -18,7 +18,8 @@ jobs:
       - run: "ln -s cicpoffs packaging/debian/usr/bin/mount.cicpoffs"
       - run: "dpkg-deb --build packaging/debian"
       - run: "cp packaging/debian.deb packaging/cicpoffs.deb"
-      - run: "sudo alien -r -c -v packaging/debian.deb"
+      - run: "cd packaging; sudo alien -r -c -v debian.deb; cd .."
+      - run: "cd packaging; mv $(ls -1 | grep cicpoffs | grep rpm | head -1) debian.rpm; cd .."
       - run: "cp packaging/debian.rpm packaging/cicpoffs.rpm"
       - uses: actions/upload-artifact@v3
         with:
