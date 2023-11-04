@@ -1,6 +1,9 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on:
+  push:
+    branches:
+      - master
 jobs:
   Build_for_DEB:
     runs-on: ubuntu-latest
@@ -24,6 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: "docker run --rm -it -v ./:/repo archlinux /bin/bash /repo/packaging/arch/bash.sh"
+      - uses: actions/upload-artifact@v3
         with:
           name: cicpoffs.tar.zst
           path: packaging/arch/cicpoffs.tar.zst
